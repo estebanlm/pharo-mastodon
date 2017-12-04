@@ -11,26 +11,9 @@ Class {
 	#category : #Mastodon
 }
 
-{ #category : #private }
-MdnRequestError class >> classFor: aString [
-	^ self "allSubclasses 	
-		detect: [ :each | each isError: aString ]
-		ifNone: [ self defaultErrorClass ]"
-]
-
-{ #category : #private }
-MdnRequestError class >> defaultErrorClass [
-	^ MdnRequestError
-]
-
-{ #category : #testing }
-MdnRequestError class >> isError: aString [ 
-	^ false
-]
-
 { #category : #signalling }
 MdnRequestError class >> signalCode: aNumber json: jsonDictionary [
-	^ (self classFor: (jsonDictionary at: 'error')) new
+	^ self new
 		code: aNumber;
 		json: jsonDictionary;
 		signal
@@ -75,7 +58,7 @@ MdnRequestError >> json: anObject [
 
 { #category : #accessing }
 MdnRequestError >> messageText [
-	^ '{1}: {2} - {3}' format: { 
+	^ '{1}:{2}:{3}' format: { 
 	self code.	
 	self errorCode. 
 	self errorDescription }

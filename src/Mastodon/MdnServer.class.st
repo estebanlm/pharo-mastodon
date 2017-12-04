@@ -46,6 +46,11 @@ MdnServer >> initializeUrl: anUrl [
 ]
 
 { #category : #api }
+MdnServer >> instance [ 
+	^ MdnInstance fromJson: (self get: (self urlApi / 'instance'))
+]
+
+{ #category : #api }
 MdnServer >> loginUsername: aName password: aPassword [
 	^ self  
 		loginUsername: aName 
@@ -55,10 +60,10 @@ MdnServer >> loginUsername: aName password: aPassword [
 
 { #category : #api }
 MdnServer >> loginUsername: aName password: aPassword scopes: aScopes [
-	| app json |
+	| app loginJson |
 	
 	app := self application.
-	json := self 
+	loginJson := self 
 		post: self urlOAuth
 		with: [ :req |
 			req
@@ -72,7 +77,7 @@ MdnServer >> loginUsername: aName password: aPassword scopes: aScopes [
 	
 	^ MdnLogin new 
 		server: self;
-		json: json;
+		json: loginJson;
 		yourself
 ]
 
@@ -120,20 +125,20 @@ MdnServer >> url [
 
 { #category : #accessing }
 MdnServer >> urlApi [
-	^ self url addPathSegments: #('api' 'v1')
+	^ self url / 'api' / 'v1'
 ]
 
 { #category : #accessing }
 MdnServer >> urlApiAccounts [
-	^ self urlApi addPathSegment: 'accounts'
+	^ self urlApi / 'accounts'
 ]
 
 { #category : #accessing }
 MdnServer >> urlApiApps [
-	^ self urlApi addPathSegment: 'apps'
+	^ self urlApi / 'apps'
 ]
 
 { #category : #accessing }
 MdnServer >> urlOAuth [
-	^ self url addPathSegments: #('oauth' 'token')
+	^ self url / 'oauth' /  'token'
 ]

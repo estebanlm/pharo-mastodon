@@ -1,15 +1,24 @@
+"
+I represent a login into a mastodon instance. 
+"
 Class {
 	#name : #MdnLogin,
 	#superclass : #MdnEntity,
 	#instVars : [
-		'server'
+		'server',
+		'account'
 	],
 	#category : #Mastodon
 }
 
-{ #category : #accessing }
+{ #category : #'accessing api' }
 MdnLogin >> accessToken [
 	^ self jsonAt: 'access_token'
+]
+
+{ #category : #accessing }
+MdnLogin >> account [
+	^ account ifNil: [ account := self verifyCredentials ]
 ]
 
 { #category : #accessing }
@@ -17,14 +26,16 @@ MdnLogin >> application [
 	^ self server application
 ]
 
-{ #category : #private }
-MdnLogin >> bearerToken [
-	^ 'Bearer {1}' format: { self accessToken }
+{ #category : #'accessing api' }
+MdnLogin >> createdAt [
+	^ DateAndTime fromUnixTime: (self jsonAt: 'created_at')
 ]
 
 { #category : #api }
 MdnLogin >> refreshToken [
-	| app refreshJson |
+	self flag: #todo. "Not supported for the moment (seems that mastodon.social does 
+	not supports it and that's where I have my account, so I cannot validate)"
+	"| app refreshJson |
 	
 	app := self application.
 	refreshJson := self 
@@ -35,12 +46,10 @@ MdnLogin >> refreshToken [
 				formAt: 'client_id' put: app clientId;
 				formAt: 'client_secret' put: app clientSecret;
 				formAt: 'grant_type' put: 'refresh_token';
-				formAt: 'refresh_token' put: self accessToken ].
-	
-	refreshJson
+				formAt: 'refresh_token' put: self accessToken ]."
 ]
 
-{ #category : #accessing }
+{ #category : #'accessing api' }
 MdnLogin >> scope [
 	^ self jsonAt: 'scope'
 ]
@@ -55,21 +64,17 @@ MdnLogin >> server: anObject [
 	server := anObject
 ]
 
-{ #category : #accessing }
-MdnLogin >> timestamp [
-	^ self jsonAt: 'created_at'
-]
-
-{ #category : #accessing }
+{ #category : #'accessing api' }
 MdnLogin >> tokenType [
 	^ self jsonAt: 'token_type'
 ]
 
 { #category : #api }
 MdnLogin >> verifyCredentials [
-	^ MdnAccount fromJson: (self 
-		get: (self server urlApiAccounts addPathSegment: 'verify_credentials')
-		with: [ :request |
-			request
-				headerAt: 'Authorization' put: self bearerToken ])
+	^ MdnAccount new 
+		login: self;
+		json: (self 
+			get: (self server urlApiAccounts / 'verify_credentials')
+			with: [ :request | request authorizationBearer: self accessToken ]);
+		yourself
 ]

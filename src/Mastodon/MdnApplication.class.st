@@ -1,10 +1,15 @@
+"
+I represent a mastodon application.
+
+https://github.com/tootsuite/documentation/blob/master/Using-the-API/API.md#application
+"
 Class {
 	#name : #MdnApplication,
 	#superclass : #MdnEntity,
 	#category : #Mastodon
 }
 
-{ #category : #options }
+{ #category : #accessing }
 MdnApplication >> clientId [
 	^ self jsonAt: 'client_id'
 ]
@@ -29,11 +34,6 @@ MdnApplication >> redirectUri [
 	^ self 
 		jsonAt: 'redirect_uri' 
 		ifAbsent: 'urn:ietf:wg:oauth:2.0:oob'
-]
-
-{ #category : #actions }
-MdnApplication >> register [
-	self api registerApplication: self
 ]
 
 { #category : #accessing }
