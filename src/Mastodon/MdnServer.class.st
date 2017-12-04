@@ -31,7 +31,7 @@ MdnServer class >> applicationAtServer: serverUrl name: aName put: application [
 
 { #category : #accessing }
 MdnServer class >> defaultApplicationName [
-	^ 'pharo-mastodon-v1'
+	^ 'pharo-mastodon-v2'
 ]
 
 { #category : #accessing }
@@ -96,7 +96,7 @@ MdnServer >> loginUsername: aName password: aPassword scopes: aScopes [
 			req
 				formAt: 'client_id' put: app clientId;
 				formAt: 'client_secret' put: app clientSecret;
-				formAt: 'scopes' put: (self scopesToString: aScopes);
+				formAt: 'scope' put: (self scopesToString: aScopes);
 				formAt: 'username' put: aName;
 				formAt: 'password' put: aPassword;
 				formAt: 'grant_type' put: 'password' ].
