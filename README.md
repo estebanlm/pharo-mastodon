@@ -1,4 +1,4 @@
-# pharo-mastondon
+# pharo-mastodon
 
 a [Pharo](http://pharo.org) API for [mastodon](http://joinmastodon.org)
 
