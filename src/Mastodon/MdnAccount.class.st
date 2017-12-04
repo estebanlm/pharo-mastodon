@@ -10,8 +10,16 @@ Class {
 	#instVars : [
 		'login'
 	],
-	#category : #Mastodon
+	#category : #'Mastodon-Entity'
 }
+
+{ #category : #'instance creation' }
+MdnAccount class >> login: aLogin json: aJson [
+	^ self new 
+		login: aLogin;
+		json: aJson;
+		yourself
+]
 
 { #category : #'accessing api' }
 MdnAccount >> acct [
@@ -43,10 +51,26 @@ MdnAccount >> displayName [
 	^ self jsonAt: 'display_name'
 ]
 
+{ #category : #api }
+MdnAccount >> followers [
+	^ (self 
+		get: (self server urlApiAccounts / self id / 'followers')
+		with: [ :request | request authorizationBearer: self login accessToken ])
+		collect: [ :each | MdnAccount login: self login json: each ]
+]
+
 { #category : #'accessing api' }
 MdnAccount >> followersCount [
 	"The number of followers for the account"
 	^ self jsonAt: 'followers_count'
+]
+
+{ #category : #api }
+MdnAccount >> following [
+	^ (self 
+		get: (self server urlApiAccounts / self id / 'following')
+		with: [ :request | request authorizationBearer: self login accessToken ])
+		collect: [ :each | MdnAccount login: self login json: each ]
 ]
 
 { #category : #'accessing api' }
@@ -95,6 +119,23 @@ MdnAccount >> note [
 	^ self jsonAt: 'note'
 ]
 
+{ #category : #printing }
+MdnAccount >> printOn: stream [ 
+	super printOn: stream.
+	stream << '(' << self acct << ')'
+]
+
+{ #category : #api }
+MdnAccount >> relationships [
+	^ (self 
+		get: self server urlApiAccounts / 'relationships'		
+		with: [ :request | 
+			request 
+				authorizationBearer: self login accessToken;
+				queryAt: 'id' put: self id ])
+		collect: [ :each | MdnRelationship json: each ]
+]
+
 { #category : #accessing }
 MdnAccount >> server [
 	^ self login server
@@ -106,7 +147,7 @@ MdnAccount >> statuses [
 	statuses := self 
 		get: self server urlApiAccounts / self id / 'statuses'
 		with: [ :request | request authorizationBearer: self login accessToken ].
-	^ statuses 
+	^ statuses collect: [ :each | MdnStatus login: self login json: each ]
 ]
 
 { #category : #'accessing api' }

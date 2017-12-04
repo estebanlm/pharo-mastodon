@@ -8,7 +8,7 @@ Class {
 		'code',
 		'json'
 	],
-	#category : #Mastodon
+	#category : #'Mastodon-Error'
 }
 
 { #category : #signalling }
@@ -43,7 +43,9 @@ MdnRequestError >> errorCode [
 
 { #category : #accessing }
 MdnRequestError >> errorDescription [
-	^ self json at: 'error_description'
+	^ self json 
+		at: 'error_description'
+		ifAbsent: [ '<no description>' ]
 ]
 
 { #category : #accessing }

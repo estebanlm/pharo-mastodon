@@ -6,7 +6,7 @@ https://github.com/tootsuite/documentation/blob/master/Using-the-API/API.md#appl
 Class {
 	#name : #MdnApplication,
 	#superclass : #MdnEntity,
-	#category : #Mastodon
+	#category : #'Mastodon-Entity'
 }
 
 { #category : #accessing }

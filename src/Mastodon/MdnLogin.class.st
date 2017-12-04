@@ -8,7 +8,7 @@ Class {
 		'server',
 		'account'
 	],
-	#category : #Mastodon
+	#category : #'Mastodon-Entity'
 }
 
 { #category : #'accessing api' }
@@ -35,6 +35,8 @@ MdnLogin >> createdAt [
 MdnLogin >> refreshToken [
 	self flag: #todo. "Not supported for the moment (seems that mastodon.social does 
 	not supports it and that's where I have my account, so I cannot validate)"
+	self notYetImplemented
+	
 	"| app refreshJson |
 	
 	app := self application.
@@ -64,6 +66,24 @@ MdnLogin >> server: anObject [
 	server := anObject
 ]
 
+{ #category : #'api streaming' }
+MdnLogin >> streamPublic [
+	^ self 
+		rawGet: self server urlApiStreaming / 'public'
+		with: [ :request | 
+			request authorizationBearer: self accessToken ]
+]
+
+{ #category : #'api streaming' }
+MdnLogin >> streamUser [
+	^ self 
+		rawGet: self server urlApiStreaming / 'user'
+		with: [ :request | 
+			request 
+				authorizationBearer: self accessToken;
+				queryAt: 'async' put: 'False' ]
+]
+
 { #category : #'accessing api' }
 MdnLogin >> tokenType [
 	^ self jsonAt: 'token_type'
@@ -71,10 +91,9 @@ MdnLogin >> tokenType [
 
 { #category : #api }
 MdnLogin >> verifyCredentials [
-	^ MdnAccount new 
-		login: self;
+	^ MdnAccount 
+		login: self
 		json: (self 
 			get: (self server urlApiAccounts / 'verify_credentials')
-			with: [ :request | request authorizationBearer: self accessToken ]);
-		yourself
+			with: [ :request | request authorizationBearer: self accessToken ])
 ]

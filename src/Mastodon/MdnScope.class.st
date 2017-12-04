@@ -10,7 +10,7 @@ Class {
 	#classInstVars : [
 		'uniqueInstance'
 	],
-	#category : #Mastodon
+	#category : #'Mastodon-Enum'
 }
 
 { #category : #accessing }

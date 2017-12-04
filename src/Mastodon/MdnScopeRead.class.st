@@ -4,7 +4,7 @@ I indicate I can read user status.
 Class {
 	#name : #MdnScopeRead,
 	#superclass : #MdnScope,
-	#category : #Mastodon
+	#category : #'Mastodon-Enum'
 }
 
 { #category : #accessing }

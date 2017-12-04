@@ -3,7 +3,7 @@ I define behaviour for send requests to mastodon
 "
 Trait {
 	#name : #TMdnRequest,
-	#category : #Mastodon
+	#category : #'Mastodon-Core'
 }
 
 { #category : #'private requesting' }

@@ -6,11 +6,11 @@ Class {
 	#instVars : [
 		'json'
 	],
-	#category : #Mastodon
+	#category : #'Mastodon-Entity'
 }
 
 { #category : #'instance creation' }
-MdnEntity class >> fromJson: aDictionary [
+MdnEntity class >> json: aDictionary [
 	^ self new json: aDictionary
 ]
 

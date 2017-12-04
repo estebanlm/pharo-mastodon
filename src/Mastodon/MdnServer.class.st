@@ -10,12 +10,12 @@ Class {
 		'url',
 		'application'
 	],
-	#category : #Mastodon
+	#category : #'Mastodon-Core'
 }
 
 { #category : #accessing }
 MdnServer class >> defaultApplicationName [
-	^ 'PharoMastodon'
+	^ 'pharo-mastodon-v1'
 ]
 
 { #category : #accessing }
@@ -47,7 +47,7 @@ MdnServer >> initializeUrl: anUrl [
 
 { #category : #api }
 MdnServer >> instance [ 
-	^ MdnInstance fromJson: (self get: (self urlApi / 'instance'))
+	^ MdnInstance json: (self get: (self urlApi / 'instance'))
 ]
 
 { #category : #api }
@@ -104,13 +104,25 @@ MdnServer >> registerApplication: aName redirectUri: uriString [
 
 { #category : #api }
 MdnServer >> registerApplication: aName redirectUri: uriString scopes: aScopes [
-	 ^ MdnApplication fromJson: (self 
+	 ^ MdnApplication json: (self 
 			post: self urlApiApps 
 			with: [ :request |
 				request
 					formAt: 'client_name' put: aName;
 					formAt: 'redirect_uris' put: uriString;
 					formAt: 'scopes' put: (self scopesToString: aScopes) ])
+]
+
+{ #category : #api }
+MdnServer >> registerApplicationCode: aName [
+	 ^ MdnApplication json: (self 
+			post: self urlApiApps 
+			with: [ :request |
+				request
+					formAt: 'client_name' put: aName;
+					formAt: 'redirect_uris' put: self class defaultRedirectUri;
+					formAt: 'scopes' put: (self scopesToString: MdnScope allScopes);
+					formAt: 'response_type' put: 'code' ])
 ]
 
 { #category : #private }
@@ -136,6 +148,11 @@ MdnServer >> urlApiAccounts [
 { #category : #accessing }
 MdnServer >> urlApiApps [
 	^ self urlApi / 'apps'
+]
+
+{ #category : #accessing }
+MdnServer >> urlApiStreaming [
+	^ self urlApi / 'streaming'
 ]
 
 { #category : #accessing }
