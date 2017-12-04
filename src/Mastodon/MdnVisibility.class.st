@@ -13,6 +13,11 @@ MdnVisibility class >> allVisibilities [
 ]
 
 { #category : #accessing }
+MdnVisibility class >> default [
+	^ self public
+]
+
+{ #category : #accessing }
 MdnVisibility class >> direct [
 	^ MdnVisibilityDirect uniqueInstance
 ]

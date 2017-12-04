@@ -32,23 +32,12 @@ MdnLogin >> createdAt [
 ]
 
 { #category : #api }
-MdnLogin >> refresh [
-	| app refreshJson |
+MdnLogin >> postStatus: aStringOrPostStatus [
+	^ aStringOrPostStatus mastodonPostStatus
+		login: self;
+		post.
 	
-	self flag: #todo. "This seems like is not working on mastodon.social (at least), so I cannot 
-	finish"
-	app := self application.
-	refreshJson := self 
-		post: self server urlOAuth
-		with: [ :req |
-			req
-				formAt: 'client_id' put: app clientId;
-				formAt: 'client_secret' put: app clientSecret;
-				formAt: 'scopes' put: (' ' join: (MdnScope allScopes collect: #name));
-				formAt: 'grant_type' put: 'refresh_token';
-				formAt: 'refresh_token' put: self refreshToken ].
-			
-	self refreshToken: (refreshJson at: 'refresh_token')
+
 ]
 
 { #category : #'accessing api' }
