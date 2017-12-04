@@ -6,7 +6,7 @@ Class {
 	#instVars : [
 		'json'
 	],
-	#category : #'Mastodon-Entity'
+	#category : #'Mastodon-Core'
 }
 
 { #category : #'instance creation' }

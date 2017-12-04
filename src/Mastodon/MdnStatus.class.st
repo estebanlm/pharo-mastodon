@@ -9,7 +9,7 @@ Class {
 	#instVars : [
 		'login'
 	],
-	#category : #'Mastodon-Entity'
+	#category : #'Mastodon-Core'
 }
 
 { #category : #'instance creation' }
@@ -60,6 +60,15 @@ MdnStatus >> favourited [
 MdnStatus >> favouritesCount [
 	"The number of favourites for the status"
 	^ self jsonAt: 'favourites_count'
+]
+
+{ #category : #gtinspector }
+MdnStatus >> gtInspectorStatusIn: composite [
+	<gtInspectorPresentationOrder: 0>  
+	 
+	composite text
+		title: self account acct, ' at ', self createdAt asLocalStringYMDHM;
+		display: self content
 ]
 
 { #category : #'accessing api' }

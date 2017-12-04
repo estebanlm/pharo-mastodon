@@ -10,7 +10,7 @@ Class {
 	#instVars : [
 		'login'
 	],
-	#category : #'Mastodon-Entity'
+	#category : #'Mastodon-Core'
 }
 
 { #category : #'instance creation' }

@@ -8,7 +8,7 @@ Class {
 		'server',
 		'account'
 	],
-	#category : #'Mastodon-Entity'
+	#category : #'Mastodon-Core'
 }
 
 { #category : #'accessing api' }
@@ -32,23 +32,33 @@ MdnLogin >> createdAt [
 ]
 
 { #category : #api }
-MdnLogin >> refreshToken [
-	self flag: #todo. "Not supported for the moment (seems that mastodon.social does 
-	not supports it and that's where I have my account, so I cannot validate)"
-	self notYetImplemented
+MdnLogin >> refresh [
+	| app refreshJson |
 	
-	"| app refreshJson |
-	
+	self flag: #todo. "This seems like is not working on mastodon.social (at least), so I cannot 
+	finish"
 	app := self application.
 	refreshJson := self 
 		post: self server urlOAuth
 		with: [ :req |
 			req
-				headerAt: 'Authorization' put: self bearerToken;
 				formAt: 'client_id' put: app clientId;
 				formAt: 'client_secret' put: app clientSecret;
+				formAt: 'scopes' put: (' ' join: (MdnScope allScopes collect: #name));
 				formAt: 'grant_type' put: 'refresh_token';
-				formAt: 'refresh_token' put: self accessToken ]."
+				formAt: 'refresh_token' put: self refreshToken ].
+			
+	self refreshToken: (refreshJson at: 'refresh_token')
+]
+
+{ #category : #'accessing api' }
+MdnLogin >> refreshToken [
+	^ self jsonAt: 'refresh_token'
+]
+
+{ #category : #'accessing api' }
+MdnLogin >> refreshToken: aString [
+	^ self jsonAt: 'refresh_token' put: aString
 ]
 
 { #category : #'accessing api' }
@@ -66,22 +76,19 @@ MdnLogin >> server: anObject [
 	server := anObject
 ]
 
-{ #category : #'api streaming' }
-MdnLogin >> streamPublic [
-	^ self 
-		rawGet: self server urlApiStreaming / 'public'
-		with: [ :request | 
-			request authorizationBearer: self accessToken ]
+{ #category : #'api timelines' }
+MdnLogin >> timelineHashtag: aString [
+	^ MdnTimelineHashtag login: self hashtag: aString
 ]
 
-{ #category : #'api streaming' }
-MdnLogin >> streamUser [
-	^ self 
-		rawGet: self server urlApiStreaming / 'user'
-		with: [ :request | 
-			request 
-				authorizationBearer: self accessToken;
-				queryAt: 'async' put: 'False' ]
+{ #category : #'api timelines' }
+MdnLogin >> timelineHome [
+	^ MdnTimelineHome login: self
+]
+
+{ #category : #'api timelines' }
+MdnLogin >> timelinePublic [
+	^ MdnTimelinePublic login: self
 ]
 
 { #category : #'accessing api' }

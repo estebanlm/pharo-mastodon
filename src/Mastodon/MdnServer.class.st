@@ -10,8 +10,24 @@ Class {
 		'url',
 		'application'
 	],
+	#classVars : [
+		'Applications'
+	],
 	#category : #'Mastodon-Core'
 }
+
+{ #category : #private }
+MdnServer class >> applicationAtServer: serverUrl name: aName [
+	^ Applications 
+		at: serverUrl 
+		at: aName 
+		ifAbsent: [ nil ]
+]
+
+{ #category : #private }
+MdnServer class >> applicationAtServer: serverUrl name: aName put: application [
+	Applications at: serverUrl at: aName put: application
+]
 
 { #category : #accessing }
 MdnServer class >> defaultApplicationName [
@@ -21,6 +37,11 @@ MdnServer class >> defaultApplicationName [
 { #category : #accessing }
 MdnServer class >> defaultRedirectUri [
 	^ 'urn:ietf:wg:oauth:2.0:oob'
+]
+
+{ #category : #'class initialization' }
+MdnServer class >> initialize [
+	Applications := Dictionary new
 ]
 
 { #category : #'instance creation' }
@@ -35,8 +56,14 @@ MdnServer class >> url: aStringOrUrl [
 
 { #category : #accessing }
 MdnServer >> application [
-	^ application ifNil: [ 
-		application := self registerApplication: self class defaultApplicationName ]
+	application ifNotNil: [ ^ application ].
+	
+	application := self class 
+		applicationAtServer: self url asString 
+		name: self class defaultApplicationName.
+	application ifNotNil: [ ^ application ].
+	
+	^ application := self registerApplication: self class defaultApplicationName
 ]
 
 { #category : #initialization }
@@ -69,7 +96,6 @@ MdnServer >> loginUsername: aName password: aPassword scopes: aScopes [
 			req
 				formAt: 'client_id' put: app clientId;
 				formAt: 'client_secret' put: app clientSecret;
-				formAt: 'grant_type' put: 'authorization_code';
 				formAt: 'scopes' put: (self scopesToString: aScopes);
 				formAt: 'username' put: aName;
 				formAt: 'password' put: aPassword;
@@ -104,25 +130,19 @@ MdnServer >> registerApplication: aName redirectUri: uriString [
 
 { #category : #api }
 MdnServer >> registerApplication: aName redirectUri: uriString scopes: aScopes [
-	 ^ MdnApplication json: (self 
-			post: self urlApiApps 
-			with: [ :request |
-				request
-					formAt: 'client_name' put: aName;
-					formAt: 'redirect_uris' put: uriString;
-					formAt: 'scopes' put: (self scopesToString: aScopes) ])
-]
-
-{ #category : #api }
-MdnServer >> registerApplicationCode: aName [
-	 ^ MdnApplication json: (self 
-			post: self urlApiApps 
-			with: [ :request |
-				request
-					formAt: 'client_name' put: aName;
-					formAt: 'redirect_uris' put: self class defaultRedirectUri;
-					formAt: 'scopes' put: (self scopesToString: MdnScope allScopes);
-					formAt: 'response_type' put: 'code' ])
+	| app |
+	app := MdnApplication json: (self 
+		post: self urlApiApps 
+		with: [ :request |
+			request
+				formAt: 'client_name' put: aName;
+				formAt: 'redirect_uris' put: uriString;
+				formAt: 'scopes' put: (self scopesToString: aScopes) ]).
+	self class 
+		applicationAtServer: self url asString 
+		name: aName 
+		put: app.
+	^ app
 ]
 
 { #category : #private }
@@ -153,6 +173,11 @@ MdnServer >> urlApiApps [
 { #category : #accessing }
 MdnServer >> urlApiStreaming [
 	^ self urlApi / 'streaming'
+]
+
+{ #category : #accessing }
+MdnServer >> urlApiTimelines [
+	^ self urlApi / 'timelines'
 ]
 
 { #category : #accessing }

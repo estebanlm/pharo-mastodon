@@ -1,5 +1,5 @@
 Class {
 	#name : #MdnAttachment,
 	#superclass : #MdnEntity,
-	#category : #'Mastodon-Entity'
+	#category : #'Mastodon-Core'
 }

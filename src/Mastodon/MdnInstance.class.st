@@ -6,5 +6,5 @@ https://github.com/tootsuite/documentation/blob/master/Using-the-API/API.md#inst
 Class {
 	#name : #MdnInstance,
 	#superclass : #MdnEntity,
-	#category : #'Mastodon-Entity'
+	#category : #'Mastodon-Core'
 }
