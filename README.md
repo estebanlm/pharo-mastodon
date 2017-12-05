@@ -38,6 +38,6 @@ login := server loginUsername: 'username@mastodon.social' password: 'shhh'.
 "ensure you have privileges enough, this will open a browser so you 
  can give 'pharo-mastodon-v1' app rights."
 server application openAuthorizeFor: login.
-"Read timeline 'home'"
+"Posting a test status"
 login postStatus: 'This is a test'.
 ```
