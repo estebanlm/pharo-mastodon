@@ -20,11 +20,6 @@ MdnApplication >> clientSecret [
 ]
 
 { #category : #accessing }
-MdnApplication >> clientSecret: aString [
-	^ self jsonAt: 'client_secret' put: aString
-]
-
-{ #category : #accessing }
 MdnApplication >> id [
 	^ self jsonAt: 'id'
 ]
@@ -35,10 +30,10 @@ MdnApplication >> name [
 ]
 
 { #category : #'as yet unclassified' }
-MdnApplication >> openAuthorizeFor: aServer [
+MdnApplication >> openAuthorizeFor: aLogin [
 	| url |
 	
-	url := aServer url / 'oauth' / 'authorize'.
+	url := aLogin server url / 'oauth' / 'authorize'.
 	url 
 		queryAt: 'client_id' put: self clientId;
 		queryAt: 'client_name' put: self name;
