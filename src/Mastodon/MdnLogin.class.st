@@ -1,5 +1,5 @@
 "
-I represent a login into a mastodon instance. 
+I represent a login (a connection) into a mastodon instance. 
 "
 Class {
 	#name : #MdnLogin,
