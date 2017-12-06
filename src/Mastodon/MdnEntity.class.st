@@ -1,3 +1,7 @@
+"
+I represent a mastodon entity. 
+Entities are any kind of input/output that can traverse the mastodon api.
+"
 Class {
 	#name : #MdnEntity,
 	#superclass : #Object,
