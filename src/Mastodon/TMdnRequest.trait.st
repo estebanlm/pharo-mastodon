@@ -7,6 +7,17 @@ Trait {
 }
 
 { #category : #'private requesting' }
+TMdnRequest >> executeRequest: requestMethod url: anUrl with: aBlock [
+	^ self withResponseHandling: [ 
+		ZnClient new 
+			url: anUrl;
+			in: aBlock;
+			method: requestMethod;
+			execute;
+			response ]
+]
+
+{ #category : #'private requesting' }
 TMdnRequest >> get: anUrl [
 	^ STON fromString: (self 
 		rawGet: anUrl 
@@ -36,22 +47,12 @@ TMdnRequest >> post: anUrl with: aBlock [
 
 { #category : #'private requesting' }
 TMdnRequest >> rawGet: anUrl with: aBlock [
-	^ self withResponseHandling: [ 
-		ZnClient new 
-			url: anUrl;
-			in: aBlock;
-			get;
-			response ]
+	^ self executeRequest: #GET url: anUrl with: aBlock 
 ]
 
 { #category : #'private requesting' }
 TMdnRequest >> rawPost: anUrl with: aBlock [
-	^ self withResponseHandling: [ 
-		ZnClient new 
-			url: anUrl;
-			in: aBlock;
-			post;
-			response ]
+	^ self executeRequest: #POST url: anUrl with: aBlock
 ]
 
 { #category : #'private requesting' }
