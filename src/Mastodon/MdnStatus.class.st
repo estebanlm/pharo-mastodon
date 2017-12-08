@@ -63,11 +63,16 @@ MdnStatus >> favouritesCount [
 ]
 
 { #category : #gtinspector }
+MdnStatus >> gtDisplayString [
+	^ self account acct, ' at ', self createdAt asLocalStringYMDHM
+]
+
+{ #category : #gtinspector }
 MdnStatus >> gtInspectorStatusIn: composite [
 	<gtInspectorPresentationOrder: 0>  
 	 
 	composite text
-		title: self account acct, ' at ', self createdAt asLocalStringYMDHM;
+		title: self gtDisplayString;
 		display: self content
 ]
 
