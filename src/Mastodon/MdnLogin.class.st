@@ -33,7 +33,7 @@ MdnLogin >> createdAt [
 
 { #category : #api }
 MdnLogin >> postStatus: aStringOrPostStatus [
-	^ aStringOrPostStatus mastodonPostStatus
+	^ aStringOrPostStatus asMastodonPostStatus
 		login: self;
 		post
 ]

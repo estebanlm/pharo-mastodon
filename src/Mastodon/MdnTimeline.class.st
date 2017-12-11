@@ -39,9 +39,14 @@ MdnTimeline >> login: anObject [
 
 { #category : #api }
 MdnTimeline >> next [
-	^ statuses := statuses, (self retrieveStatusesSince: (statuses 
+	^ self nextSinceId: (statuses 
 		ifNotEmpty: [ statuses last id ]
-		ifEmpty: [ nil ]))
+		ifEmpty: [ nil ])
+]
+
+{ #category : #api }
+MdnTimeline >> nextSinceId: anId [
+	^ statuses := statuses, (self retrieveStatusesSince: anId)
 ]
 
 { #category : #api }

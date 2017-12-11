@@ -1,7 +1,7 @@
 Extension { #name : #String }
 
 { #category : #'*Mastodon' }
-String >> mastodonPostStatus [
+String >> asMastodonPostStatus [
 	^ MdnPostStatus new 
 		status: self;
 		yourself

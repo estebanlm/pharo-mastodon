@@ -8,10 +8,16 @@ Class {
 		'medias',
 		'spoilerText',
 		'visibility',
-		'sensitive'
+		'sensitive',
+		'mediaAttachments'
 	],
 	#category : #'Mastodon-Core'
 }
+
+{ #category : #converting }
+MdnPostStatus >> asMastodonPostStatus [
+	^ self
+]
 
 { #category : #'accessing api' }
 MdnPostStatus >> inReplyTo [
@@ -44,14 +50,10 @@ MdnPostStatus >> login: anObject [
 	login := anObject
 ]
 
-{ #category : #converting }
-MdnPostStatus >> mastodonPostStatus [
-	^ self
-]
-
 { #category : #private }
 MdnPostStatus >> mediaIdsAsArrayString [
-	^ ('[', (self medias collect: #id) asCommaString), ']'
+	mediaAttachments ifNil: [ ^ '[]' ].
+	^ ('[', (mediaAttachments collect: #id) asCommaString), ']'
 ]
 
 { #category : #'accessing api' }
@@ -66,6 +68,7 @@ MdnPostStatus >> medias: anObject [
 
 { #category : #api }
 MdnPostStatus >> post [ 
+	self medias ifNotNil: [ self postMedias ].
 	^ MdnStatus 
 		login: self 
 		json: (self login 
@@ -83,6 +86,14 @@ MdnPostStatus >> post [
 					ifFalse: [ request formAt: 'media_ids' put: self mediaIdsAsArrayString ].
 				self spoilerText 
 					ifNotNil: [ request formAt: 'spoiler_text' put: self spoilerText ] ])
+]
+
+{ #category : #api }
+MdnPostStatus >> postMedias [
+	mediaAttachments := self medias collect: [ :each | 
+		each 
+			login: self login;
+			upload ]
 ]
 
 { #category : #'accessing api' }
