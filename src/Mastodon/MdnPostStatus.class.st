@@ -13,12 +13,12 @@ Class {
 	#category : #'Mastodon-Core'
 }
 
-{ #category : #accessing }
+{ #category : #'accessing api' }
 MdnPostStatus >> inReplyTo [
 	^ inReplyTo
 ]
 
-{ #category : #accessing }
+{ #category : #'accessing api' }
 MdnPostStatus >> inReplyTo: anObject [
 	inReplyTo := anObject
 ]
@@ -54,12 +54,12 @@ MdnPostStatus >> mediaIdsAsArrayString [
 	^ ('[', (self medias collect: #id) asCommaString), ']'
 ]
 
-{ #category : #accessing }
+{ #category : #'accessing api' }
 MdnPostStatus >> medias [
 	^ medias
 ]
 
-{ #category : #accessing }
+{ #category : #'accessing api' }
 MdnPostStatus >> medias: anObject [
 	medias := anObject
 ]
@@ -85,7 +85,7 @@ MdnPostStatus >> post [
 					ifNotNil: [ request formAt: 'spoiler_text' put: self spoilerText ] ])
 ]
 
-{ #category : #accessing }
+{ #category : #'accessing api' }
 MdnPostStatus >> sensitive: aBoolean [
 	sensitive := aBoolean
 ]
@@ -95,32 +95,32 @@ MdnPostStatus >> server [
 	^ self login server
 ]
 
-{ #category : #accessing }
+{ #category : #'accessing api' }
 MdnPostStatus >> spoilerText [
 	^ spoilerText
 ]
 
-{ #category : #accessing }
+{ #category : #'accessing api' }
 MdnPostStatus >> spoilerText: anObject [
 	spoilerText := anObject
 ]
 
-{ #category : #accessing }
+{ #category : #'accessing api' }
 MdnPostStatus >> status [
 	^ status
 ]
 
-{ #category : #accessing }
+{ #category : #'accessing api' }
 MdnPostStatus >> status: anObject [
 	status := anObject
 ]
 
-{ #category : #accessing }
+{ #category : #'accessing api' }
 MdnPostStatus >> visibility [
 	^ visibility ifNil: [ visibility := MdnVisibility default ]
 ]
 
-{ #category : #accessing }
+{ #category : #'accessing api' }
 MdnPostStatus >> visibility: anObject [
 	visibility := anObject
 ]

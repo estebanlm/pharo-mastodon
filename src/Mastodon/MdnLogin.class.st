@@ -35,9 +35,7 @@ MdnLogin >> createdAt [
 MdnLogin >> postStatus: aStringOrPostStatus [
 	^ aStringOrPostStatus mastodonPostStatus
 		login: self;
-		post.
-	
-
+		post
 ]
 
 { #category : #'accessing api' }
