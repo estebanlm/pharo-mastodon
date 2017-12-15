@@ -22,7 +22,7 @@ MdnPostMedia class >> fileName: aString reference: aReference [
 		yourself
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #private }
 MdnPostMedia >> entityForReference [
 	| mimeType fileStream size |
 	mimeType := ZnMimeType forFilenameExtension: self fileName asFileReference extension.
@@ -69,7 +69,7 @@ MdnPostMedia >> server [
 	^ self login server
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #api }
 MdnPostMedia >> upload [
 	^ MdnAttachment json: (self login 
 		post: self server urlApi / 'media'

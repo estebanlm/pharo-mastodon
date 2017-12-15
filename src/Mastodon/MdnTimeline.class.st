@@ -62,7 +62,9 @@ MdnTimeline >> retrieveStatusesSince: anId [
 		with: [ :request | 
 			request authorizationBearer: self login accessToken.
 			anId ifNotNil: [ 
-				request queryAt: 'since_id' put: anId ] ])
+				request 
+					queryAt: 'since_id' put: anId;
+					queryAt: 'max_id' put: 50 ] ])
 		collect: [ :each | MdnStatus login: self login json: each ]
 ]
 

@@ -135,7 +135,7 @@ MdnPostStatus >> post [
 	self medias ifNotNil: [ self uploadMedias ].
 	"then actually post (and answer a status)"
 	^ MdnStatus 
-		login: self 
+		login: self login
 		json: (self login 
 			post: self server urlApi / 'statuses'
 			with: [ :request | self addPostParametersTo: request ])
@@ -161,13 +161,17 @@ MdnPostStatus >> spoilerText: anObject [
 	spoilerText := anObject
 ]
 
-{ #category : #api }
+{ #category : #private }
+MdnPostStatus >> uploadMedia: aPostMedia [
+	^ aPostMedia
+		login: self login;
+		upload
+]
+
+{ #category : #private }
 MdnPostStatus >> uploadMedias [
 	mediaAttachments := self medias 
-		collect: [ :each | 
-			each 
-				login: self login;
-				upload ]
+		collect: [ :each | self uploadMedia: each ]
 ]
 
 { #category : #'accessing api' }

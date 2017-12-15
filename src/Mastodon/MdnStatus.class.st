@@ -26,10 +26,20 @@ MdnStatus >> account [
 	^ MdnAccount login: self login json: (self jsonAt: 'account')
 ]
 
+{ #category : #accessing }
+MdnStatus >> accountName [
+	^ self account acct
+]
+
 { #category : #'accessing api' }
 MdnStatus >> application [
 	"Application from which the status was posted"
 	^ MdnApplication json: (self jsonAt: 'application')
+]
+
+{ #category : #accessing }
+MdnStatus >> applicationName [
+	^ (self jsonAt: 'application') at: 'name'
 ]
 
 { #category : #'accessing api' }
