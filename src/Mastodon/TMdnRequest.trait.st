@@ -12,6 +12,7 @@ TMdnRequest >> executeRequest: requestMethod url: anUrl with: aBlock [
 		ZnClient new 
 			url: anUrl;
 			in: aBlock;
+			beOneShot;
 			method: requestMethod;
 			execute;
 			response ]

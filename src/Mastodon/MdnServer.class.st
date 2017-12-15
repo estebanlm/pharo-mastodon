@@ -8,7 +8,8 @@ Class {
 	#classTraits : 'TMdnRequest classTrait',
 	#instVars : [
 		'url',
-		'application'
+		'application',
+		'applicationName'
 	],
 	#classVars : [
 		'Applications'
@@ -60,10 +61,20 @@ MdnServer >> application [
 	
 	application := self class 
 		applicationAtServer: self url asString 
-		name: self class defaultApplicationName.
+		name: self applicationName.
 	application ifNotNil: [ ^ application ].
 	
-	^ application := self registerApplication: self class defaultApplicationName
+	^ application := self registerApplication: self applicationName
+]
+
+{ #category : #accessing }
+MdnServer >> applicationName [
+	^ applicationName ifNil: [ applicationName := self class defaultApplicationName ]
+]
+
+{ #category : #accessing }
+MdnServer >> applicationName: aString [
+	applicationName := aString
 ]
 
 { #category : #initialization }
