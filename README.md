@@ -21,9 +21,6 @@ Metacello new
 server := MdnServer url: 'https://mastodon.social'.
 "Login"
 login := server loginUsername: 'username@yourmail.net' password: 'shhh'.
-"ensure you have privileges enough, this will open a browser so you 
- can give 'pharo-mastodon-v1' app rights."
-server application openAuthorizeFor: login.
 "Read timeline 'home'"
 login timelineHome next.
 ```
@@ -35,9 +32,6 @@ login timelineHome next.
 server := MdnServer url: 'https://mastodon.social'.
 "Login"
 login := server loginUsername: 'username@yourmail.net' password: 'shhh'.
-"ensure you have privileges enough, this will open a browser so you 
- can give 'pharo-mastodon-v1' app rights."
-server application openAuthorizeFor: login.
 "Posting a test status"
 login postStatus: 'This is a test'.
 ```
