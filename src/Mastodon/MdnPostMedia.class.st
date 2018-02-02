@@ -1,6 +1,6 @@
 "
 I represent a media file to be uploaded with a new status. 
-While I can upload them separately, usually that does not has sense outside a status post.
+While I can upload them separately, usually that does not make sense outside a status post.
 
 "
 Class {
